@@ -4,7 +4,7 @@ class WebComponent extends HTMLElement {
     this.shadow = this.attachShadow({ mode: 'open' });
   }
   
-  render(template) {
+  template(template) {
     this.shadow.innerHTML = template;
   }
 }
@@ -12,7 +12,10 @@ class WebComponent extends HTMLElement {
 class FooBaz extends WebComponent {
   constructor (){
     super()
-    this.render(`<div>Hola, soy Baz (${this.getAttribute('foo')})</div>`);
+    this.template(`
+      <div>
+        Hola, soy Baz (<span>${this.getAttribute('foo')}</span>)
+      </div>`);
   }
   connectedCallback() {
 
@@ -25,7 +28,7 @@ class FooBaz extends WebComponent {
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
-    this.shadow.querySelector('div').innerText = this.shadow.querySelector('div').innerText.replace(oldValue, newValue)
+    this.shadow.querySelector('span').innerText = newValue;
   }
 }
 
